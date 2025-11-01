@@ -1,0 +1,23 @@
+services:
+  torrent:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - /mnt/storage/torrents:/torrents:rw
+      - /mnt/storage/mediatheque:/mediatheque:rw
+      - ./config:/config:rw
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    env_file:
+      - path: .env
+        required: true
+    privileged: true
+    cgroup: host
+    devices:
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
